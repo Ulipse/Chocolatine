@@ -60,6 +60,11 @@ class Score
      */
     private $gift;
 
+    public function __construct()
+    {
+        $this->obtainedAt = new \DateTime();
+    }
+
 
     /**
      * Get id

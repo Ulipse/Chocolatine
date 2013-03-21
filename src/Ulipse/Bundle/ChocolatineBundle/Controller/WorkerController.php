@@ -10,6 +10,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Ulipse\Bundle\ChocolatineBundle\Entity\Worker;
+use Ulipse\Bundle\ChocolatineBundle\Form\WorkerType;
 
 /**
  * Class WorkerController
@@ -39,24 +40,32 @@ class WorkerController extends RestController
      */
     public function newAction()
     {
-
-
-        return View::create(null, 201);
+        return View::create(new Worker());
     }
 
     /**
      * @ApiDoc(description="Edit Worker")
-     * @Route("")
+     * @Route("/{id}")
+     * @ParamConverter("worker", class="UlipseChocolatineBundle:Worker")
      * @Method("PUT")
      * @Rest\View()
      */
-    public function editAction()
+    public function editAction(Worker $worker)
     {
-        return View::create(null, 204);
+        return $this->processForm($worker, self::EDIT_MODE);
     }
 
-    public function processForm()
+    protected function processForm(Worker $worker, $mode = self::CREATE_MODE)
     {
+        $form = $this->createForm(new WorkerType(), $worker);
+        $form->bind($this->getRequest());
 
+        if (!$form->isValid()) {
+            return View::create($form, 400);
+        }
+
+        $this->saveEntity($worker, true);
+
+        return View::create($worker, $mode);
     }
 }

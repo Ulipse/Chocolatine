@@ -20,7 +20,6 @@ use Ulipse\Bundle\ChocolatineBundle\Form\TeamType;
  */
 class TeamController extends RestController
 {
-    protected $entity;
 
     /**
      * @ApiDoc(description="Get teams")
@@ -47,7 +46,8 @@ class TeamController extends RestController
 
     /**
      * @ApiDoc(description="Edit Team")
-     * @Route("")
+     * @Route("/{id}")
+     * @ParamConverter("team", class="UlipseChocolatineBundle:Team")
      * @Method("PUT")
      * @Rest\View()
      */

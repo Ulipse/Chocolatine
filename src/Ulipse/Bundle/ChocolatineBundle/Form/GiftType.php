@@ -15,6 +15,8 @@ class GiftType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('value')
+            ->add('term')
         ;
     }
 

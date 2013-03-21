@@ -15,6 +15,8 @@ class ScoreType extends AbstractType
     {
         $builder
             ->add('value')
+            ->add('status')
+            ->add('object')
         ;
     }
 

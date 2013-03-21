@@ -10,6 +10,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Ulipse\Bundle\ChocolatineBundle\Entity\Score;
+use Ulipse\Bundle\ChocolatineBundle\Form\ScoreType;
 
 /**
  * Class ScoreController
@@ -39,23 +40,32 @@ class ScoreController extends RestController
      */
     public function newAction()
     {
-
-        return View::create(null, 201);
+        return $this->processForm(new Score());
     }
 
     /**
      * @ApiDoc(description="Edit Score")
-     * @Route("")
+     * @Route("/{id}")
+     * @ParamConverter("score", class="UlipseChocolatineBundle:Score")
      * @Method("PUT")
      * @Rest\View()
      */
-    public function editAction()
+    public function editAction(Score $score)
     {
-        return View::create(null, 204);
+        return $this->processForm($score, self::EDIT_MODE);
     }
 
-    public function processForm()
+    protected function processForm(Score $score, $mode = self::CREATE_MODE)
     {
+        $form = $this->createForm(new ScoreType(), $score);
+        $form->bind($this->getRequest());
 
+        if (!$form->isValid()) {
+            return View::create($form, 400);
+        }
+
+        $this->saveEntity($score, true);
+
+        return View::create($score, $mode);
     }
 }

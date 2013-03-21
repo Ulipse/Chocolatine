@@ -15,6 +15,8 @@ class WorkerType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('job')
+            ->add('status')
         ;
     }
 
