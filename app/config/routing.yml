@@ -1,0 +1,6 @@
+ulipse_chocolatine:
+    resource: "@UlipseChocolatineBundle/Controller"
+    prefix: /
+    type: annotation
+    defaults:
+        _format: json
